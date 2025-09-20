@@ -153,7 +153,7 @@ export function DriverTable({ drivers, onDeleteDriver }: DriverTableProps) {
                     onClick={() => handleSort("efficiency")}
                     className="h-auto p-0 font-semibold"
                   >
-                    Score
+                    Efficiency (km/kWh)
                     <ArrowUpDown className="ml-1 h-4 w-4" />
                   </Button>
                 </th>

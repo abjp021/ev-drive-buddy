@@ -27,13 +27,13 @@ export function StatsCards({ drivers }: StatsCardsProps) {
       title: "Average Efficiency",
       value: averageEfficiency.toFixed(1),
       icon: TrendingUp,
-      description: "Points average",
+      description: "km/kWh average",
     },
     {
-      title: "Top Performer",
+      title: "Top Efficiency",
       value: topDriver ? `${topDriver.efficiency.toFixed(1)}` : "—",
       icon: Award,
-      description: topDriver ? topDriver.name : "No data yet",
+      description: topDriver ? `${topDriver.name} (km/kWh)` : "No data yet",
     },
     {
       title: "Energy Savers",

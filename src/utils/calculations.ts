@@ -1,20 +1,30 @@
 import { Driver, BadgeType } from "@/types/driver";
 
-const SCALING_FACTOR = 10; // Adjust this to scale scores appropriately
-const MAX_SCORE = 100;
+const MAX_EFFICIENCY = 10; // Max km/kWh efficiency score
 
 export function calculateEfficiency(distance: number, energyUsed: number): number {
   if (energyUsed <= 0) return 0;
   
-  const efficiency = (distance / energyUsed) * SCALING_FACTOR;
-  return Math.min(efficiency, MAX_SCORE);
+  const efficiency = distance / energyUsed; // km/kWh
+  const cappedEfficiency = Math.min(efficiency, MAX_EFFICIENCY);
+  
+  console.log(`Calculating efficiency: ${distance}km / ${energyUsed}kWh = ${efficiency} km/kWh, capped at ${cappedEfficiency}`);
+  
+  return cappedEfficiency;
 }
 
 export function getBadgeType(efficiency: number): BadgeType {
-  const actualEfficiency = efficiency / SCALING_FACTOR; // Convert back to km/kWh
+  console.log(`Determining badge for efficiency: ${efficiency} km/kWh`);
   
-  if (actualEfficiency >= 8) return "Energy Saver";
-  if (actualEfficiency >= 5) return "Eco Driver";
+  if (efficiency >= 8) {
+    console.log("Badge: Energy Saver (>=8 km/kWh)");
+    return "Energy Saver";
+  }
+  if (efficiency >= 5) {
+    console.log("Badge: Eco Driver (>=5 km/kWh)");
+    return "Eco Driver";
+  }
+  console.log("Badge: Needs Improvement (<5 km/kWh)");
   return "Needs Improvement";
 }
 
