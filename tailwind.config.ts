@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // EV Theme Colors
+        "electric-blue": "hsl(var(--electric-blue))",
+        "eco-green": "hsl(var(--eco-green))",
+        "energy-amber": "hsl(var(--energy-amber))",
+        "needs-red": "hsl(var(--needs-red))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +62,12 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      backgroundImage: {
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-eco": "var(--gradient-eco)",
+        "gradient-energy": "var(--gradient-energy)",
+        "gradient-background": "var(--gradient-background)",
       },
       borderRadius: {
         lg: "var(--radius)",
