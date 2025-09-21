@@ -50,6 +50,10 @@ export function DriverTable({ drivers, onDeleteDriver }: DriverTableProps) {
           aValue = a.efficiency;
           bValue = b.efficiency;
           break;
+        case "normalizedEfficiency":
+          aValue = a.normalizedEfficiency;
+          bValue = b.normalizedEfficiency;
+          break;
         case "distance":
           aValue = a.distance;
           bValue = b.distance;
@@ -85,34 +89,37 @@ export function DriverTable({ drivers, onDeleteDriver }: DriverTableProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Driver Efficiency Leaderboard</CardTitle>
-        <div className="flex flex-col sm:flex-row gap-4 mt-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search drivers or vehicles..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
-            />
-          </div>
-          <Select value={badgeFilter} onValueChange={(value) => setBadgeFilter(value as BadgeType | "all")}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Filter by badge" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Badges</SelectItem>
-              <SelectItem value="Energy Saver">Energy Saver</SelectItem>
-              <SelectItem value="Eco Driver">Eco Driver</SelectItem>
-              <SelectItem value="Needs Improvement">Needs Improvement</SelectItem>
-            </SelectContent>
-          </Select>
+    <div className="p-6">
+      <div className="mb-6">
+        <h2 className="text-xl font-bold text-gray-800 mb-2">Driver Performance</h2>
+        <p className="text-gray-600 text-sm">View and manage all driver efficiency data</p>
+      </div>
+      
+      {/* Enhanced Controls */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Input
+            placeholder="Search drivers or vehicles..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 h-10 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500"
+          />
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="overflow-x-auto">
+        <Select value={badgeFilter} onValueChange={(value) => setBadgeFilter(value as BadgeType | "all")}>
+          <SelectTrigger className="w-full sm:w-48 h-10 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500">
+            <SelectValue placeholder="Filter by badge" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Badges</SelectItem>
+            <SelectItem value="Energy Saver">Energy Saver</SelectItem>
+            <SelectItem value="Eco Driver">Eco Driver</SelectItem>
+            <SelectItem value="Needs Improvement">Needs Improvement</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      
+      <div className="overflow-auto max-h-80">
           <table className="w-full">
             <thead>
               <tr className="border-b">
@@ -157,6 +164,16 @@ export function DriverTable({ drivers, onDeleteDriver }: DriverTableProps) {
                     <ArrowUpDown className="ml-1 h-4 w-4" />
                   </Button>
                 </th>
+                <th className="text-center py-3 px-2">
+                  <Button
+                    variant="ghost"
+                    onClick={() => handleSort("normalizedEfficiency")}
+                    className="h-auto p-0 font-semibold"
+                  >
+                    Score (0-100)
+                    <ArrowUpDown className="ml-1 h-4 w-4" />
+                  </Button>
+                </th>
                 <th className="text-center py-3 px-2">Badge</th>
                 <th className="text-center py-3 px-2">Actions</th>
               </tr>
@@ -186,6 +203,11 @@ export function DriverTable({ drivers, onDeleteDriver }: DriverTableProps) {
                     </div>
                   </td>
                   <td className="py-4 px-2 text-center">
+                    <div className="flex items-center justify-center">
+                      <span className="font-bold text-lg text-blue-600">{driver.normalizedEfficiency}</span>
+                    </div>
+                  </td>
+                  <td className="py-4 px-2 text-center">
                     <Badge type={driver.badge} size="sm" />
                   </td>
                   <td className="py-4 px-2 text-center">
@@ -205,11 +227,10 @@ export function DriverTable({ drivers, onDeleteDriver }: DriverTableProps) {
         </div>
         
         {filteredAndSortedDrivers.length === 0 && drivers.length > 0 && (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-8 text-gray-500">
             No drivers match your current filters.
           </div>
         )}
-      </CardContent>
-    </Card>
+    </div>
   );
 }
