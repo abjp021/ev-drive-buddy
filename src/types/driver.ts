@@ -5,6 +5,7 @@ export interface Driver {
   distance: number;
   energyUsed: number;
   efficiency: number;
+  normalizedEfficiency: number;
   badge: BadgeType;
 }
 

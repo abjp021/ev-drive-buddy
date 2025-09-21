@@ -9,9 +9,11 @@ import { processDriverData } from "@/utils/calculations";
 
 interface DriverFormProps {
   onAddDriver: (driver: Omit<Driver, 'id'>) => void;
+  onClose?: () => void;
+  existingDrivers?: Driver[];
 }
 
-export function DriverForm({ onAddDriver }: DriverFormProps) {
+export function DriverForm({ onAddDriver, onClose, existingDrivers = [] }: DriverFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     vehicle: "",
@@ -37,7 +39,8 @@ export function DriverForm({ onAddDriver }: DriverFormProps) {
       formData.name,
       formData.vehicle,
       distance,
-      energyUsed
+      energyUsed,
+      existingDrivers
     );
 
     onAddDriver(driverData);
@@ -48,6 +51,11 @@ export function DriverForm({ onAddDriver }: DriverFormProps) {
       distance: "",
       energyUsed: "",
     });
+
+    // Auto-close modal after successful addition
+    setTimeout(() => {
+      if (onClose) onClose();
+    }, 1000);
   };
 
   const handleInputChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,18 +66,20 @@ export function DriverForm({ onAddDriver }: DriverFormProps) {
   };
 
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Plus className="h-5 w-5" />
-          Add New Driver
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Driver Name</Label>
+    <div className="space-y-6">
+      <div className="text-center">
+        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <Plus className="h-8 w-8 text-white" />
+        </div>
+        <h3 className="text-xl font-semibold text-gray-800 mb-2">Add New Driver</h3>
+        <p className="text-gray-600">
+          Enter driver details to calculate efficiency score and assign badges
+        </p>
+      </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="name" className="text-sm font-semibold text-gray-700">Driver Name</Label>
               <Input
                 id="name"
                 type="text"
@@ -77,11 +87,12 @@ export function DriverForm({ onAddDriver }: DriverFormProps) {
                 value={formData.name}
                 onChange={handleInputChange("name")}
                 required
+                className="h-12 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 rounded-lg"
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="vehicle">Vehicle Model</Label>
+            <div className="space-y-3">
+              <Label htmlFor="vehicle" className="text-sm font-semibold text-gray-700">Vehicle Model</Label>
               <Input
                 id="vehicle"
                 type="text"
@@ -89,11 +100,12 @@ export function DriverForm({ onAddDriver }: DriverFormProps) {
                 value={formData.vehicle}
                 onChange={handleInputChange("vehicle")}
                 required
+                className="h-12 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 rounded-lg"
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="distance">Distance Covered (km)</Label>
+            <div className="space-y-3">
+              <Label htmlFor="distance" className="text-sm font-semibold text-gray-700">Distance Covered (km)</Label>
               <Input
                 id="distance"
                 type="number"
@@ -103,11 +115,12 @@ export function DriverForm({ onAddDriver }: DriverFormProps) {
                 value={formData.distance}
                 onChange={handleInputChange("distance")}
                 required
+                className="h-12 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 rounded-lg"
               />
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="energy">Energy Used (kWh)</Label>
+            <div className="space-y-3">
+              <Label htmlFor="energy" className="text-sm font-semibold text-gray-700">Energy Used (kWh)</Label>
               <Input
                 id="energy"
                 type="number"
@@ -117,19 +130,19 @@ export function DriverForm({ onAddDriver }: DriverFormProps) {
                 value={formData.energyUsed}
                 onChange={handleInputChange("energyUsed")}
                 required
+                className="h-12 border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 rounded-lg"
               />
             </div>
           </div>
           
           <Button 
             type="submit" 
-            className="w-full bg-gradient-primary hover:opacity-90 transition-opacity"
+            className="w-full h-12 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-lg font-semibold"
           >
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 h-5 w-5" />
             Add Driver
           </Button>
         </form>
-      </CardContent>
-    </Card>
+    </div>
   );
 }
